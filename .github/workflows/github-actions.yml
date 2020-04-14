@@ -37,9 +37,9 @@ jobs:
           ctest --verbose -S ../CTestScript.cmake
         shell: bash
         env:
-          CTEST_SOURCE_DIRECTORY: ${{ GITHUB_WORKSPACE }}
-          CTEST_BUILD_NAME: ${{ GITHUB_RUN_NUMBER }}
-          CTEST_SITE: ${{ 'GHA-Linux' }}
+          CTEST_SOURCE_DIRECTORY: ${GITHUB_WORKSPACE}
+          CTEST_BUILD_NAME: ${GITHUB_RUN_NUMBER}
+          CTEST_SITE: "GHA-Linux"
           CTEST_CDASH_AUTH_TOKEN: ${{ secrets.CTEST_CDASH_AUTH_TOKEN }}
           
 #  Windows:
