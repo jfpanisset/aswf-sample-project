@@ -42,9 +42,9 @@ jobs:
           CTEST_SITE: "GHA-Linux"
           CTEST_CDASH_AUTH_TOKEN: ${{ secrets.CTEST_CDASH_AUTH_TOKEN }}
           
-  Windows:
-    runs-on: windows-2019
+#  Windows:
+#    runs-on: windows-2019
 
-  macOS:
-    runs-on: macos-latest
+#  macOS:
+#    runs-on: macos-latest
 
