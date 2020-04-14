@@ -45,6 +45,27 @@ jobs:
 #  Windows:
 #    runs-on: windows-2019
 
-#  macOS:
-#    runs-on: macos-latest
+  macOS:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Build with CMake
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+        shell: bash
+      - name: Test with CTest
+        run: |
+          cd build
+          ctest --verbose -S ../CTestScript.cmake
+        shell: bash
+        env:
+          CTEST_SOURCE_DIRECTORY: ${{ github.workspace }}
+          CTEST_BUILD_NAME: ${{ github.run_number }}
+          CTEST_SITE: "GHA-macOS"
+          CTEST_CDASH_AUTH_TOKEN: ${{ secrets.CTEST_CDASH_AUTH_TOKEN }}
+
 
