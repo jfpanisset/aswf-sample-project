@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ASWF Sample Project
+#
+# A simple multi-platform GitHub Actions  definition to build, run test suite
+# and upload results to test dashboard. Using 'matrix' would reduce duplication
+# but there's no such thing as macOS containers. Could move the steps to a separate
+# YAML file.
+#
+
+on:
+  push:
+    branches:
+      - master
+  pull_requests:
+    branches:
+      - master
+
+jobs:
+  Linux:
+    runs-on: ubuntu-18.04
+    container:
+      image: aswf/ci-base:2020
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Build with CMake
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+        shell: bash
+      - name: Test with CTest
+        run: |
+          cd build
+          ctest --verbose -S ../CTestScript.cmake
+        shell: bash
+        env:
+          CTEST_SOURCE_DIRECTORY: $GITHUB_WORKSPACE
+          CTEST_BUILD_NAME: $GITHUB_RUN_NUMBER
+          CTEST_SITE: "GHA-Linux"
+          CTEST_CDASH_AUTH_TOKEN: ${{ secrets.CTEST_CDASH_AUTH_TOKEN }}
+          
+  Windows:
+    runs-on: windows-2019
+
+  macOS:
+    runs-on: macos-latest
+
