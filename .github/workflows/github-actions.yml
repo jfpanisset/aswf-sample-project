@@ -11,6 +11,7 @@ on:
   push:
     branches:
       - master
+      - github_actions
   pull_requests:
     branches:
       - master
