@@ -37,7 +37,7 @@ jobs:
         working-directory: build
         env:
           CTEST_SOURCE_DIRECTORY: ${{ github.WORKSPACE }}
-          CTEST_BUILD_NAME: ${{ github.RUN_ID }}-${{ github.RUN_NUMBER }}-${{ matrix.os }}
+          CTEST_BUILD_NAME: ${{ github.RUN_ID }}-${{ github.RUN_NUMBER }}
           CTEST_SITE: "GitHub Actions Runner"-${{ matrix.os }}
           CTEST_CDASH_AUTH_TOKEN: ${{ secrets.CTEST_CDASH_AUTH_TOKEN }}
 
