@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright Contributors to the ASWF Sample Projec
+# Copyright Contributors to the ASWF Sample Project
 
 # Example CTest script which runs the test suite and sends the results to a CDash dashboard.
 # Depends on the following environment variables, which should be set in your CI environment:

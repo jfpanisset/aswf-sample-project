@@ -5,7 +5,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![Build Status](https://dev.azure.com/panisset0719/aswf-sample-project/_apis/build/status/aswf-sample-project.ci?branchName=master)](https://dev.azure.com/panisset0719/aswf-sample-project/_build/latest?definitionId=12&branchName=master)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=imageworks_OpenColorIO&metric=alert_status)](https://sonarcloud.io/dashboard?id=imageworks_OpenColorIO)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AcademySoftwareFoundation_aswf-sample-project&metric=alert_status)](https://sonarcloud.io/dashboard?id=AcademySoftwareFoundation_aswf-sample-project)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2612/badge)](https://bestpractices.coreinfrastructure.org/projects/2612)
 
 The purpose of this project is to provide a skeleton or sample Academy Software Foundation (ASWF) project reflecting the best practices that have been established by the Technical Advisory Committee (TAC). More detailed documentation can be found in the [Technical Advisory Committee repository](https://github.com/AcademySoftwareFoundation/tac).
@@ -73,7 +73,7 @@ ASWF Projects are required to designate a Technical Steering Committee (TSC) whi
 
 A suggested directory structure for the TSC-related documents based on the OpenVDB project is the following:
 
-```
+```shell
 project
 ├── LICENSE
 ├── README.md
@@ -107,7 +107,6 @@ The project must specify a versioning mechanism, and it is suggested that [Seman
 ## Maintainers List and Code Ownership
 
 The project should include an up to date list of key contributors. This could take an ad hoc form such as the [OpenColorIO COMMITTERS.md file](https://github.com/AcademySoftwareFoundation/OpenColorIO/blob/master/COMMITTERS.md), and/or leverage the [GitHub CODEOWNERS mechanism](https://help.github.com/en/articles/about-code-owners) such as in the [OpenVDB CODEOWNERS file](https://github.com/AcademySoftwareFoundation/openvdb/blob/master/CODEOWNERS) which allows code review of pull requests to be automatically requested from owners of modified code.
-
 
 ## Project Website
 
@@ -261,11 +260,11 @@ Next create an authentication token for this CDash project which will be used by
 
 ![CDash Token Creation](images/cdash_token.png)
 
-Then add the CDash token that was created as a secret variable called `CTEST_CDASH_AUTH_TOKEN` in the Azure Pipelines pipeline definition (assuming you named your pipeline `GITHUB_PROJECT.ci` as per the section on Azure DevOps CLI configuration). 
+Then add the CDash token that was created as a secret variable called `CTEST_CDASH_AUTH_TOKEN` in the Azure Pipelines pipeline definition (assuming you named your pipeline `GITHUB_PROJECT.ci` as per the section on Azure DevOps CLI configuration).
 
 ```bash
 export AZURE_DEVOPS_EXT_PAT=YOUR_AZDEVOPS_PAT
-az pipelines variable create --name CTEST_CDASH_AUTH_TOKEN --value YOUR_CDASH_TOKEN --secret true --allow-override true --pipeline-name GITHUB_PROJECT.ci 
+az pipelines variable create --name CTEST_CDASH_AUTH_TOKEN --value YOUR_CDASH_TOKEN --secret true --allow-override true --pipeline-name GITHUB_PROJECT.ci
 ```
 
 By default [secrets associated with a build pipeline are not made available to pull request builds of forks](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#validate-contributions-from-forks) which will cause automatic gating test builds for Pull Requests to fail since these are built from a separate fork.
@@ -302,7 +301,11 @@ to run the CTest script, and you should then be able to view the [test results o
 
 ## Static Analysis
 
-SonarCloud, but lots of other options such as [Clang-Tidy](https://clang.llvm.org/extra/clang-tidy/), [Cppcheck](http://cppcheck.sourceforge.net/), [Infer](https://fbinfer.com/), [LGTM](https://lgtm.com/), [PVS-Studio](https://www.viva64.com/en/pvs-studio/).
+The [Static Code Analysis requirement for the CII badge](https://github.com/coreinfrastructure/best-practices-badge/blob/master/doc/criteria.md#analysis) requires that "at least one static code analysis tool (beyond compiler warnings and "safe" language modes) MUST be applied to any proposed major production release of the software before its release". There are several open source tools available, as well as "free for open source" commercial tools such as such as [Clang-Tidy](https://clang.llvm.org/extra/clang-tidy/), [Cppcheck](http://cppcheck.sourceforge.net/), [Infer](https://fbinfer.com/), [LGTM](https://lgtm.com/), [PVS-Studio](https://www.viva64.com/en/pvs-studio/). ASWF projects have currently settled on the use of [SonarCloud](https://sonarcloud.io/) for relevant components. SonarCloud can connect to a public GitHub repository and run its code analysis as part of a CI pipeline.
+
+An [Academy Software Foundation SonarCloud organization](https://sonarcloud.io/organizations/academysoftwarefoundation/projects) has been created and is managed by the Linux Foundation Release Engineering team. When a new project is added to the [Academy Software Foundation GitHub organization](https://github.com/AcademySoftwareFoundation) the lf-releng team creates a corresponding project under the SonarCloud ASWF organization. Projects requiring more specific SonarCloud configuration should open a lf-releng ticket for these requests.
+
+For projects using GitHub Actions for their CI pipelines, an [organization-level secret](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-an-organization) holds the project key to allow API access to SonarCloud. Projects using using CI systems such as Travis CI or Azure Pipelines will need to open a lf-releng ticket to request the creation of a CI system specific secret to allow access to SonarCloud. The authentication token is named `SONAR_TOKEN` and can be accessed explicitly in GitHub Actions YAML files using `${{ secrets.SONAR_TOKEN }}` syntax.
 
 ## Ticketing System
 
@@ -377,7 +380,6 @@ namespace MAP = MyAswfProject_v2_1;
 ```
 
 allows client code to refer to API functions as `MAP::foo()` without having to worry about the specific version, while still allowing global renaming of the library namespace from the CMake command line.
-
 
 ## Release Notes
 

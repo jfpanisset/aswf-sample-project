@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Copyright Contributors to the ASWF Sample Projec
+# Copyright Contributors to the ASWF Sample Project
 
 # Name used by CDash to refer to the project
 set(CTEST_PROJECT_NAME "aswf-sample-project")
