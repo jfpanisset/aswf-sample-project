@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - master
+      - jf_sonarcloud_gha
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
