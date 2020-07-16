@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ASWF Sample Project
 #
-# Demonstrate a simple multi-platform build using GitHub Actions
+# Demonstrate a simple multi-platform build using GitHub Actions.
+# Ideally should use matrix strategy to avoid code replication but
+# unfortunately it's unclear how you can use container:
+# only for the Linux platform.
 
 on:
   push:
@@ -19,24 +22,60 @@ env:
 
 jobs:
   BuildSampleApp:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Create build directory
-        run: mkdir build
-      - name: Build test program
-        run: |
-          cmake ..
-          cmake --build .
-        shell: bash
-        working-directory: build
-      - name: Run test suite
-        run: |
-          ctest --verbose -S ../CTestScript.cmake
-        shell: bash 
-        working-directory: build
+    linux:
+      runs-on: ubuntu-latest
+      container: aswf/ci-base:2020
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v2
+        - name: Create build directory
+          run: mkdir build
+        - name: Build test program
+          run: |
+            cmake ..
+            cmake --build .
+          shell: bash
+          working-directory: build
+        - name: Run test suite
+          run: |
+            ctest --verbose -S ../CTestScript.cmake
+          shell: bash 
+          working-directory: build
 
+    windows:
+      runs-on: windows-latest
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v2
+        - name: Create build directory
+          run: mkdir build
+        - name: Build test program
+          run: |
+            cmake ..
+            cmake --build .
+          shell: bash
+          working-directory: build
+        - name: Run test suite
+          run: |
+            ctest --verbose -S ../CTestScript.cmake
+          shell: bash 
+          working-directory: build
+
+    macos:
+      runs-on: macos-latest
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v2
+        - name: Create build directory
+          run: mkdir build
+        - name: Build test program
+          run: |
+            cmake ..
+            cmake --build .
+          shell: bash
+          working-directory: build
+        - name: Run test suite
+          run: |
+            ctest --verbose -S ../CTestScript.cmake
+          shell: bash 
+          working-directory: build
