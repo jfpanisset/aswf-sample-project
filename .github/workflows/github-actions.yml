@@ -23,7 +23,8 @@ env:
 jobs:
   linux:
     runs-on: ubuntu-latest
-    container: aswf/ci-base:2020
+    # The aswf/ci-base container includes the SonarCloud tools
+    container: 'aswf/ci-base:2020'
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -32,13 +33,18 @@ jobs:
       - name: Build test program
         run: |
           cmake ..
-          cmake --build .
+          build-wrapper-linux-x86-64 --out-dir bw-output cmake --build .
         shell: bash
         working-directory: build
       - name: Run test suite
         run: |
           ctest --verbose -S ../CTestScript.cmake
         shell: bash 
+        working-directory: build
+      - name: Run SonarCloud static analysis and upload results
+        run: |
+          sonar-scanner
+        shell: bash
         working-directory: build
 
   windows:
