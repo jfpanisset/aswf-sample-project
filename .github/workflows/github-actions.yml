@@ -43,7 +43,7 @@ jobs:
         working-directory: build
       - name: Run SonarCloud static analysis and upload results
         run: |
-          sonar-scanner
+          sonar-scanner -Dproject.settings=../sonar-project.properties
         shell: bash
         working-directory: build
 
